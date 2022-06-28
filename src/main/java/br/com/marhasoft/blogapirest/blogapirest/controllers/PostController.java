@@ -1,6 +1,7 @@
 package br.com.marhasoft.blogapirest.blogapirest.controllers;
 
 import br.com.marhasoft.blogapirest.blogapirest.dtos.PostDTO;
+import br.com.marhasoft.blogapirest.blogapirest.dtos.PostResponseDTO;
 import br.com.marhasoft.blogapirest.blogapirest.models.Post;
 import br.com.marhasoft.blogapirest.blogapirest.services.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,11 +17,11 @@ public class PostController {
     PostService postService;
 
     @GetMapping
-    public ResponseEntity<Post> listAll(@RequestParam(value = "pageNumber", defaultValue = "0", required = false)
+    public ResponseEntity<PostResponseDTO> findAll(@RequestParam(value = "pageNumber", defaultValue = "0", required = false)
                                                     int pageNumber,
-                                        @RequestParam(value = "pageSize", defaultValue = "10", required = false)
+                                                   @RequestParam(value = "pageSize", defaultValue = "10", required = false)
                                                 int pageSize) {
-        return new ResponseEntity(postService.listAll(pageNumber, pageSize), HttpStatus.OK);
+        return new ResponseEntity(postService.findAll(pageNumber, pageSize), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")

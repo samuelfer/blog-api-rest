@@ -1,6 +1,7 @@
 package br.com.marhasoft.blogapirest.blogapirest.services;
 
 import br.com.marhasoft.blogapirest.blogapirest.dtos.PostDTO;
+import br.com.marhasoft.blogapirest.blogapirest.dtos.PostResponseDTO;
 import br.com.marhasoft.blogapirest.blogapirest.exceptions.ResourceNotFoundException;
 import br.com.marhasoft.blogapirest.blogapirest.models.Post;
 import br.com.marhasoft.blogapirest.blogapirest.repositories.PostRepository;
@@ -10,10 +11,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class PostService {
@@ -21,11 +21,23 @@ public class PostService {
     @Autowired
     PostRepository postRepository;
 
-    public List<Post> listAll(int pageNumber, int pageSize) {
+    public PostResponseDTO findAll(int pageNumber, int pageSize) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
         Page<Post> posts = postRepository.findAll(pageable);
-        List<Post> listPosts = posts.getContent();
-        return listPosts;
+
+        List<Post> content = posts.getContent();
+
+        List<PostDTO> postContent = content.stream().map(post -> mapPostToPostDTO(post))
+                .collect(Collectors.toList());
+
+        PostResponseDTO postResponseDTO = new PostResponseDTO();
+        postResponseDTO.setPosts(postContent);
+        postResponseDTO.setPageNumber(posts.getNumber());
+        postResponseDTO.setTotalElements(posts.getTotalElements());
+        postResponseDTO.setTotalPage(posts.getTotalPages());
+        postResponseDTO.setPageSize(posts.getSize());
+        postResponseDTO.setLast(posts.isLast());
+        return postResponseDTO;
     }
 
     public PostDTO findById(Long id) {
@@ -64,5 +76,14 @@ public class PostService {
     private Post findByIdOrErro(Long id) {
         return postRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Post", "id", id));
+    }
+
+    private PostDTO mapPostToPostDTO(Post post) {
+        PostDTO postDTO = new PostDTO();
+
+        postDTO.setTitle(postDTO.getTitle());
+        postDTO.setDescription(post.getDescription());
+        postDTO.setDatePublished(post.getDatePublish());
+        return postDTO;
     }
 }

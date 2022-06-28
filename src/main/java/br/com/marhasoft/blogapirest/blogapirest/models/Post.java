@@ -1,5 +1,6 @@
 package br.com.marhasoft.blogapirest.blogapirest.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,6 +31,7 @@ public class Post {
 
     private LocalDateTime datePublish = LocalDateTime.now();
 
+    @JsonBackReference
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Comment> comments = new HashSet<>();
 }

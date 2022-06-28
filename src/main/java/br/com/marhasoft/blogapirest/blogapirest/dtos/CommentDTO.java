@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
-@AllArgsConstructor
+@NoArgsConstructor
 public class CommentDTO {
 
     private Long id;
@@ -19,17 +19,4 @@ public class CommentDTO {
     private String text;
     @JsonFormat(pattern="dd/MM/yyyy HH:mm")
     private LocalDateTime datePublished = LocalDateTime.now();
-
-    public CommentDTO() {
-        CommentDTO commentDTO = new CommentDTO();
-        commentDTO.setName(getName());
-        commentDTO.setEmail(getEmail());
-        commentDTO.setText(getText());
-    }
-
-    public CommentDTO(CommentDTO commentDTO) {
-        commentDTO.setName(getName());
-        commentDTO.setEmail(getEmail());
-        commentDTO.setText(getText());
-    }
 }

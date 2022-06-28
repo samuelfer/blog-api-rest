@@ -6,7 +6,11 @@ import br.com.marhasoft.blogapirest.blogapirest.models.Post;
 import br.com.marhasoft.blogapirest.blogapirest.repositories.PostRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,8 +21,11 @@ public class PostService {
     @Autowired
     PostRepository postRepository;
 
-    public List<Post> listAll() {
-        return postRepository.findAll();
+    public List<Post> listAll(int pageNumber, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Page<Post> posts = postRepository.findAll(pageable);
+        List<Post> listPosts = posts.getContent();
+        return listPosts;
     }
 
     public PostDTO findById(Long id) {

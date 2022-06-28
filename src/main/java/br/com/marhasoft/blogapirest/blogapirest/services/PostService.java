@@ -82,9 +82,11 @@ public class PostService {
     private PostDTO mapPostToPostDTO(Post post) {
         PostDTO postDTO = new PostDTO();
 
-        postDTO.setTitle(postDTO.getTitle());
+        postDTO.setId(post.getId());
+        postDTO.setTitle(post.getTitle());
         postDTO.setDescription(post.getDescription());
         postDTO.setDatePublished(post.getDatePublish());
+        postDTO.setComments(post.getComments());
         return postDTO;
     }
 }

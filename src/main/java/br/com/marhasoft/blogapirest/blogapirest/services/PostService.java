@@ -21,6 +21,11 @@ public class PostService {
     @Autowired
     PostRepository postRepository;
 
+    public Post findByIdOrErro(Long id) {
+        return postRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Post", "id", id));
+    }
+
     public PostResponseDTO findAll(int pageNumber, int pageSize) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
         Page<Post> posts = postRepository.findAll(pageable);
@@ -71,11 +76,6 @@ public class PostService {
     public void delete(Long id) {
         Post post = findByIdOrErro(id);
         postRepository.delete(post);
-    }
-
-    private Post findByIdOrErro(Long id) {
-        return postRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Post", "id", id));
     }
 
     private PostDTO mapPostToPostDTO(Post post) {

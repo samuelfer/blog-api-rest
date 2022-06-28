@@ -20,6 +20,8 @@ public class PostService {
 
     @Autowired
     PostRepository postRepository;
+    @Autowired
+    ModelMapper modelMapper;
 
     public Post findByIdOrErro(Long id) {
         return postRepository.findById(id)
@@ -54,7 +56,6 @@ public class PostService {
     }
 
     public PostDTO save(PostDTO postDTO) {
-        ModelMapper modelMapper = new ModelMapper();
         Post post = modelMapper.map(postDTO, Post.class);
         Post newPost = postRepository.save(post);
         PostDTO postDTOSave = modelMapper.map(newPost, PostDTO.class);
@@ -68,7 +69,7 @@ public class PostService {
         post.setDescription(postDTO.getDescription());
 
         Post postUpdated = postRepository.save(post);
-        ModelMapper modelMapper = new ModelMapper();
+
         PostDTO postSaved = modelMapper.map(postUpdated, PostDTO.class);
         return postSaved;
     }

@@ -20,6 +20,8 @@ public class CommentService {
     CommentRepository commentRepository;
     @Autowired
     PostService postService;
+    @Autowired
+    ModelMapper modelMapper;
 
     private Comment findByIdOrErro(Long id) {
         return commentRepository.findById(id)
@@ -42,7 +44,6 @@ public class CommentService {
     public CommentDTO save(Long postId, CommentDTO commentDTO) {
         Post post = postService.findByIdOrErro(postId);
 
-        ModelMapper modelMapper = new ModelMapper();
         Comment comment = modelMapper.map(commentDTO, Comment.class);
 
         comment.setPost(post);

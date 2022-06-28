@@ -26,7 +26,7 @@ public class CommentService {
                 .orElseThrow(() -> new ResourceNotFoundException("Comment", "id", id));
     }
 
-    public Comment findCommentByIdAndPostId(Long postId, Long id) {
+    public Comment findCommentByIdAndPostId(Long id, Long postId) {
         Post post = postService.findByIdOrErro(postId);
         Comment comment = findByIdOrErro(id);
         if (!comment.getPost().getId().equals(post.getId())) {
@@ -50,5 +50,24 @@ public class CommentService {
 
         CommentDTO commentDTOSaved = modelMapper.map(commentSaved, CommentDTO.class);
         return commentDTOSaved;
+    }
+
+    public Comment update(Long commentId, Long postId, CommentDTO commentDTO) {
+        Post post = postService.findByIdOrErro(postId);
+        Comment comment = findByIdOrErro(commentId);
+
+        if (!comment.getPost().getId().equals(post.getId())) {
+            throw new BlogAppException(HttpStatus.BAD_REQUEST, "The comment does not belong to the post");
+        }
+        comment.setName(commentDTO.getName());
+        comment.setEmail(commentDTO.getEmail());
+        comment.setText(commentDTO.getText());
+
+        return commentRepository.save(comment);
+    }
+
+    public void delete(Long id) {
+        Comment comment = findByIdOrErro(id);
+        commentRepository.delete(comment);
     }
 }

@@ -1,9 +1,14 @@
 package br.com.marhasoft.blogapirest.blogapirest.models;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 
+@Getter
+@Setter
 @Entity
-@Table(name = "role", uniqueConstraints = {@UniqueConstraint(columnNames = {"name"})})
+@Table(name = "roles", uniqueConstraints = {@UniqueConstraint(columnNames = {"name"})})
 public class Role {
 
     @Id

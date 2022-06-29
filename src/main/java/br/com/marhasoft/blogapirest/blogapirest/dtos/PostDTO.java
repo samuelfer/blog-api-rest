@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.Set;
 
@@ -17,8 +19,15 @@ import java.util.Set;
 public class PostDTO {
 
     private Long id;
+
+    @NotEmpty
+    @Size(min = 5, message = "Título precisa ter no mínimo 5 caracteres")
     private String title;
+
+    @NotEmpty
+    @Size(min = 10, message = "Descrição precisa ter no mínimo 10 caracteres")
     private String description;
+
     @JsonFormat(pattern="dd/MM/yyyy HH:mm")
     private LocalDateTime datePublished = LocalDateTime.now();
     private Set<Comment> comments;

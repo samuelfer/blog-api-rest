@@ -2,6 +2,7 @@ package br.com.marhasoft.blogapirest.blogapirest.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -11,6 +12,7 @@ import java.util.Set;
 @Getter
 @Setter
 @AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "users", uniqueConstraints = {@UniqueConstraint(columnNames = {"username"}),
         @UniqueConstraint(columnNames = {"email"})})
